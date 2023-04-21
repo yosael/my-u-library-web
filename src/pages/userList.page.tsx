@@ -13,16 +13,26 @@ import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
 import Container from "@mui/material/Container";
+import Loader from "@/components/loader";
 
 export default function UserListPage() {
   const [users, setUsers] = useState<UserResponse[]>([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const getUsers = async () => {
-      const result = await UserService.findAll();
-      setUsers(result);
+      setLoading(true);
+      try {
+        const result = await UserService.findAll();
+        setUsers(result);
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
     };
     getUsers();
   }, []);
+
+  if (loading) return <Loader />;
 
   return (
     <Container>

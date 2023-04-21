@@ -14,6 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { NavLink } from "react-router-dom";
+import { styled } from "@mui/material";
 
 type PageLink = {
   name: string;
@@ -28,6 +29,35 @@ const pages: PageLink[] = [
 ];
 
 const settings = ["Profile", "Logout"];
+
+const StyledNavLink = styled(NavLink)({
+  display: "block",
+  color: "white",
+  textDecoration: "none",
+  textAlign: "center",
+  height: "100%",
+  ":hover": {
+    color: "white",
+  },
+  padding: 5,
+  "&.active": {
+    borderBottom: "2px solid white",
+  },
+});
+
+const StyledNavLinkMenu = styled(NavLink)({
+  display: "block",
+  color: "black",
+  textDecoration: "none",
+  textAlign: "center",
+  ":hover": {
+    color: "black",
+  },
+  padding: 5,
+  "&.active": {
+    borderBottom: "2px solid black",
+  },
+});
 
 export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -105,7 +135,9 @@ export default function Navbar() {
               >
                 {pages.map((page) => (
                   <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page.name}</Typography>
+                    <StyledNavLinkMenu to={page.path}>
+                      <Typography textAlign="center">{page.name}</Typography>
+                    </StyledNavLinkMenu>
                   </MenuItem>
                 ))}
               </Menu>
@@ -129,14 +161,14 @@ export default function Navbar() {
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
-                <NavLink
+                <StyledNavLink
                   key={page.name}
                   onClick={handleCloseNavMenu}
                   //sx={{ my: 2, color: "white", display: "block" }}
                   to={page.path}
                 >
                   {page.name}
-                </NavLink>
+                </StyledNavLink>
               ))}
             </Box>
 
