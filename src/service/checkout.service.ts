@@ -31,4 +31,20 @@ export default class CheckoutService {
       throw new Error((error as Error).message);
     }
   }
+
+  public static async returnBook(checkoutId: string) {
+    try {
+      await fetch(
+        `${process.env.REACT_APP_API_URL}/checkouts/return/${checkoutId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
 }
