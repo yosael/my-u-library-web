@@ -15,11 +15,11 @@ export default function AppRoutes() {
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/users:id" element={<UserPage />} />
+          <Route path="/users/:id" element={<UserPage />} />
           <Route path="/users" element={<UserListPage />} />
-          <Route path="/books:id" element={<BookPage />} />
+          <Route path="/books/:id" element={<BookPage />} />
           <Route path="/books" element={<BookListPage />} />
-          <Route path="/checkouts:id" element={<CheckoutAdminPage />} />
+          <Route path="/checkouts/:id" element={<CheckoutAdminPage />} />
           <Route path="/checkouts" element={<CheckoutListAdminPage />} />
           <Route path="*" element={<h1>404 - Not Found!</h1>} />
         </Routes>
