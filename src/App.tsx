@@ -1,12 +1,12 @@
 import { Container } from "@mui/material";
 import "./App.css";
-import Navbar from "./components/navbar";
+import AppRoutes from "./components/appRoutes";
 
 function App() {
   return (
     <div className="App">
       <Container>
-        <Navbar />
+        <AppRoutes />
       </Container>
     </div>
   );

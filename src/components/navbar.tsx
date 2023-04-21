@@ -13,8 +13,20 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import { NavLink } from "react-router-dom";
 
-const pages = ["Books", "Users", "Checkouts"];
+type PageLink = {
+  name: string;
+  path: string;
+};
+
+const pages: PageLink[] = [
+  { name: "Home", path: "/" },
+  { name: "Users", path: "/users" },
+  { name: "Books", path: "/books" },
+  { name: "Checkouts", path: "/checkouts" },
+];
+
 const settings = ["Profile", "Logout"];
 
 export default function Navbar() {
@@ -92,8 +104,8 @@ export default function Navbar() {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
+                  <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{page.name}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
@@ -117,13 +129,14 @@ export default function Navbar() {
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
-                <Button
-                  key={page}
+                <NavLink
+                  key={page.name}
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  //sx={{ my: 2, color: "white", display: "block" }}
+                  to={page.path}
                 >
-                  {page}
-                </Button>
+                  {page.name}
+                </NavLink>
               ))}
             </Box>
 
