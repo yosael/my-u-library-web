@@ -11,13 +11,20 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Loader from "@/components/loader";
+import AddIcon from "@mui/icons-material/Add";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 export default function UserListPage() {
   const [users, setUsers] = useState<UserResponse[]>([]);
   const [loading, setLoading] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<string>("");
+
   useEffect(() => {
     const getUsers = async () => {
       setLoading(true);
@@ -32,14 +39,53 @@ export default function UserListPage() {
     getUsers();
   }, []);
 
+  const handleChange = (event: SelectChangeEvent) => {
+    setSelectedRole(event.target.value);
+  };
+
+  const filteredUSers = users.filter((user) => {
+    if (selectedRole === "") return true;
+    return user.role === selectedRole;
+  });
+
   if (loading) return <Loader />;
 
   return (
     <Container>
       <h1>User List</h1>
       <Paper sx={{ width: "100%", overflow: "hidden", my: 4 }}>
-        <Box py={1} ml={2}>
-          <Button variant="contained">Add User</Button>
+        <Box
+          py={1}
+          ml={2}
+          display={"flex"}
+          alignItems={"center"}
+          alignContent={"center"}
+          justifyContent={"space-between"}
+        >
+          <NavLink to={"/user"}>
+            <Button variant="contained" startIcon={<AddIcon />}>
+              Add User
+            </Button>
+          </NavLink>
+          <FormControl sx={{ m: 1, minWidth: 160 }}>
+            <InputLabel id="demo-simple-select-autowidth-label">
+              Search By Role
+            </InputLabel>
+            <Select
+              labelId="select-role-label"
+              id="select-role"
+              value={selectedRole}
+              onChange={handleChange}
+              autoWidth
+              label="Search by role"
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={"student"}>Student</MenuItem>
+              <MenuItem value={"librarian"}>Librarian</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
       </Paper>
       <TableContainer component={Paper}>
@@ -54,7 +100,7 @@ export default function UserListPage() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((row) => (
+            {filteredUSers.map((row) => (
               <TableRow
                 key={row.email}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -66,7 +112,7 @@ export default function UserListPage() {
                 <TableCell>{row.email}</TableCell>
                 <TableCell>{row.role}</TableCell>
                 <TableCell>
-                  <Link to={`/users/${row.id}`}>
+                  <Link to={`/user/${row.id}`}>
                     <EditIcon />
                   </Link>
                 </TableCell>

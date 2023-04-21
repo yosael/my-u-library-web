@@ -7,11 +7,16 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import SaveIcon from "@mui/icons-material/Save";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import { ActionResult } from "@/types/actions";
 
 export default function UserPage() {
   const [user, setUser] = useState<UserResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [actionResult, setActionResult] = useState<ActionResult | null>(null);
   const params = useParams();
 
   useEffect(() => {
@@ -26,13 +31,29 @@ export default function UserPage() {
     }
   }, []);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!user) return;
-    if (params.id) {
-      UserService.updateUser(params.id, user);
-    } else {
-      UserService.createUser(user);
+
+    try {
+      setLoading(true);
+      if (params.id) {
+        await UserService.updateUser(params.id, user);
+      } else {
+        await UserService.createUser(user);
+      }
+      setActionResult({
+        message: "User succesfully saved",
+        messageType: "success",
+      });
+    } catch (error) {
+      console.log("error from server");
+      setActionResult({
+        message: (error as Error).message,
+        messageType: "error",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -49,6 +70,16 @@ export default function UserPage() {
     setUser((prev) => ({ ...prev, [name]: value } as UserResponse));
   };
 
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setActionResult(null);
+  };
+
   const title = params.id ? "Edit" : "Create New";
 
   return (
@@ -61,6 +92,7 @@ export default function UserPage() {
           "& .MuiTextField-root": { m: 1, width: "35ch" },
           maxWidth: 600,
           width: "100%",
+          margin: "0 auto",
         }}
         noValidate
         autoComplete="off"
@@ -96,6 +128,7 @@ export default function UserPage() {
             label="Role"
             name="role"
             select
+            required
             onChange={handleSelectChange}
           >
             <MenuItem value={"student"}>Student</MenuItem>
@@ -108,15 +141,39 @@ export default function UserPage() {
               Cancel
             </Button>
           </Link>
+          <Link to={"/users"}>
+            <Button
+              variant="contained"
+              color="info"
+              startIcon={<FormatListBulletedIcon />}
+            >
+              User List
+            </Button>
+          </Link>
           <Button
             variant="contained"
             startIcon={<SaveIcon />}
-            style={{ marginLeft: 40 }}
             type="submit"
+            disabled={loading}
           >
-            Save
+            {loading ? "Saving" : "Save"}
           </Button>
         </Box>
+        {actionResult && (
+          <Snackbar
+            open={actionResult != null}
+            autoHideDuration={6000}
+            onClose={handleClose}
+          >
+            <MuiAlert
+              onClose={handleClose}
+              severity={actionResult?.messageType}
+              sx={{ width: "100%" }}
+            >
+              {actionResult?.message}
+            </MuiAlert>
+          </Snackbar>
+        )}
       </Box>
     </Container>
   );

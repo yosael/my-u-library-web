@@ -15,7 +15,8 @@ export default function AppRoutes() {
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/users/:id" element={<UserPage />} />
+          <Route path="/user/:id" element={<UserPage />} />
+          <Route path="/user" element={<UserPage />} />
           <Route path="/users" element={<UserListPage />} />
           <Route path="/books/:id" element={<BookPage />} />
           <Route path="/books" element={<BookListPage />} />

@@ -5,6 +5,7 @@ export default class UserService {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/users`);
       const data = (await response.json()) as UserResponse[];
+      if (!response.ok) throw new Error(response.statusText);
       return data;
     } catch (error) {
       throw new Error((error as Error).message);
@@ -17,6 +18,7 @@ export default class UserService {
         `${process.env.REACT_APP_API_URL}/users/${id}`
       );
       const data = (await response.json()) as UserResponse;
+      if (!response.ok) throw new Error(response.statusText);
       return data;
     } catch (error) {
       throw new Error((error as Error).message);
@@ -32,6 +34,7 @@ export default class UserService {
         },
         body: JSON.stringify(user),
       });
+      if (!response.ok) throw new Error(await response.text());
       const data = (await response.json()) as UserResponse;
       return data;
     } catch (error) {
@@ -54,6 +57,8 @@ export default class UserService {
           body: JSON.stringify(user),
         }
       );
+
+      if (!response.ok) throw new Error(await response.text());
       const data = (await response.json()) as UserResponse;
       return data;
     } catch (error) {
@@ -64,7 +69,7 @@ export default class UserService {
   public static async findAll(): Promise<UserResponse[]> {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/users`);
-      console.log(response);
+      if (!response.ok) throw new Error(response.statusText);
       const data = (await response.json()) as UserResponse[];
       return data;
     } catch (error) {
