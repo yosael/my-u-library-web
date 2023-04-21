@@ -19,6 +19,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
+import SchoolIcon from "@mui/icons-material/School";
+import IconText from "@/components/IconText";
 
 export default function UserListPage() {
   const [users, setUsers] = useState<UserResponse[]>([]);
@@ -110,7 +113,16 @@ export default function UserListPage() {
                 </TableCell>
                 <TableCell>{row.lastName}</TableCell>
                 <TableCell>{row.email}</TableCell>
-                <TableCell>{row.role}</TableCell>
+                <TableCell>
+                  {row.role == "student" ? (
+                    <IconText text="Student" iconProp={<SchoolIcon />} />
+                  ) : (
+                    <IconText
+                      text="Librarian"
+                      iconProp={<LocalLibraryIcon />}
+                    />
+                  )}
+                </TableCell>
                 <TableCell>
                   <Link to={`/user/${row.id}`}>
                     <EditIcon />

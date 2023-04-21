@@ -26,7 +26,6 @@ export default function UserPage() {
     };
 
     if (params.id) {
-      console.log("user id: ", params.id);
       getUser(params.id);
     }
   }, []);
@@ -47,7 +46,6 @@ export default function UserPage() {
         messageType: "success",
       });
     } catch (error) {
-      console.log("error from server");
       setActionResult({
         message: (error as Error).message,
         messageType: "error",
@@ -70,10 +68,7 @@ export default function UserPage() {
     setUser((prev) => ({ ...prev, [name]: value } as UserResponse));
   };
 
-  const handleClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
+  const handleClose = (_?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
       return;
     }
