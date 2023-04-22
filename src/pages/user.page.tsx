@@ -12,17 +12,29 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import { ActionResult } from "@/types/actions";
+import Loader from "@/components/loader";
 
 export default function UserPage() {
   const [user, setUser] = useState<UserResponse | null>(null);
   const [loading, setLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(false);
   const [actionResult, setActionResult] = useState<ActionResult | null>(null);
   const params = useParams();
 
   useEffect(() => {
     const getUser = async (userId: string) => {
-      const result = await UserService.getUserById(userId);
-      setUser(result);
+      try {
+        setLoadingData(true);
+        const result = await UserService.getUserById(userId);
+        setUser(result);
+      } catch (error) {
+        setActionResult({
+          message: (error as Error).message,
+          messageType: "error",
+        });
+      } finally {
+        setLoadingData(false);
+      }
     };
 
     if (params.id) {
@@ -76,6 +88,8 @@ export default function UserPage() {
   };
 
   const title = params.id ? "Edit" : "Create New";
+
+  if (loadingData) return <Loader />;
 
   return (
     <Container>
