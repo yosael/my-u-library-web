@@ -97,14 +97,20 @@ export default function CheckoutListAdminPage() {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {row.user.name}
+                  <b>{row.user.name}</b>
                 </TableCell>
                 <TableCell>{row.book.title}</TableCell>
                 <TableCell>{row.checkoutDate.toString()}</TableCell>
                 <TableCell>
                   {row.returnDate ? row.returnDate.toString() : null}
                 </TableCell>
-                <TableCell>{row.status}</TableCell>
+                <TableCell
+                  style={{
+                    color: row.status == "returned" ? "green" : "#ffa726",
+                  }}
+                >
+                  {row.status}
+                </TableCell>
                 <TableCell>
                   <Link to={`/checkouts/admin/${row.id}`}>
                     <EditIcon />

@@ -105,13 +105,11 @@ export default function CheckoutAdminPage() {
             name="userName"
             label={"User"}
             required
-            disabled
           />
           <TextField
             value={checkout?.book.title || ""}
             label={"Book"}
             name="bookTitle"
-            disabled
           />
         </div>
         <div>
@@ -119,22 +117,32 @@ export default function CheckoutAdminPage() {
             value={checkout?.checkoutDate || ""}
             label={"Checkout Date"}
             name="checkoutDate"
-            disabled
           />
           <TextField
             value={checkout?.returnDate || ""}
             label={"Return Date"}
             name="returnDate"
-            disabled
+          />
+        </div>
+        <div>
+          <TextField
+            value={checkout?.status.toUpperCase() || ""}
+            label={"Status"}
+            name="statusDate"
+            style={{ textTransform: "capitalize" }}
+            color={checkout?.status == "returned" ? "success" : "warning"}
           />
         </div>
         <Box display={"flex"} justifyContent={"space-evenly"} mt={2}>
-          <Link to={"/checkouts/admin"}>
-            <Button variant="contained" color="error">
-              Cancel
-            </Button>
-          </Link>
-          <Link to={"/checkouts/admin"}>
+          {checkout?.status == "requested" && (
+            <Link to={"/checkouts/admin"} style={{ textDecoration: "none" }}>
+              <Button variant="contained" color="error">
+                Cancel
+              </Button>
+            </Link>
+          )}
+
+          <Link to={"/checkouts/admin"} style={{ textDecoration: "none" }}>
             <Button
               variant="contained"
               color="info"
@@ -143,14 +151,16 @@ export default function CheckoutAdminPage() {
               Checkout List
             </Button>
           </Link>
-          <Button
-            variant="contained"
-            startIcon={<SaveIcon />}
-            type="submit"
-            disabled={loading}
-          >
-            {loading ? "Updating" : "Return Book"}
-          </Button>
+          {(checkout?.status == "requested" || !checkout?.returnDate) && (
+            <Button
+              variant="contained"
+              startIcon={<SaveIcon />}
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? "Updating" : "Return Book"}
+            </Button>
+          )}
         </Box>
         {actionResult && (
           <Snackbar
