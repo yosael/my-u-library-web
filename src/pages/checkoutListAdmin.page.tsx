@@ -6,12 +6,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link, NavLink } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Loader from "@/components/loader";
-import AddIcon from "@mui/icons-material/Add";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
@@ -30,14 +28,14 @@ export default function CheckoutListAdminPage() {
     searchCheckout != null
       ? checkouts.filter(
           (checkout) =>
-            checkout.userId
+            checkout.user.name
               .toLowerCase()
               .includes(searchCheckout.toLowerCase()) ||
-            checkout.bookId
+            checkout.book.title
               .toLowerCase()
               .includes(searchCheckout.toLowerCase()) ||
             checkout.checkoutDate
-              .toDateString()
+              .toString()
               .toLowerCase()
               .includes(searchCheckout.toLowerCase())
         )
@@ -57,11 +55,7 @@ export default function CheckoutListAdminPage() {
           alignContent={"center"}
           justifyContent={"space-between"}
         >
-          <NavLink to={"/checkout/admin"} style={{ textDecoration: "none" }}>
-            <Button variant="contained" startIcon={<AddIcon />}>
-              Add Checkout
-            </Button>
-          </NavLink>
+          <Box></Box>
           <Paper
             sx={{
               p: "2px 4px",
@@ -72,7 +66,7 @@ export default function CheckoutListAdminPage() {
           >
             <InputBase
               sx={{ ml: 1, flex: 1 }}
-              placeholder="Search checkout by Title, Author, Genre or Stock"
+              placeholder="Search checkout by User, Book Title or Date"
               inputProps={{ "aria-label": "search google maps" }}
               value={searchCheckout || ""}
               onChange={(e) => setSearchCheckout(e.target.value)}
@@ -99,20 +93,20 @@ export default function CheckoutListAdminPage() {
           <TableBody>
             {filteredCheckouts?.map((row) => (
               <TableRow
-                key={row.userId}
+                key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {row.userId}
+                  {row.user.name}
                 </TableCell>
-                <TableCell>{row.bookId}</TableCell>
+                <TableCell>{row.book.title}</TableCell>
                 <TableCell>{row.checkoutDate.toString()}</TableCell>
                 <TableCell>
                   {row.returnDate ? row.returnDate.toString() : null}
                 </TableCell>
                 <TableCell>{row.status}</TableCell>
                 <TableCell>
-                  <Link to={`/checkout/admin/${row.id}`}>
+                  <Link to={`/checkouts/admin/${row.id}`}>
                     <EditIcon />
                   </Link>
                 </TableCell>

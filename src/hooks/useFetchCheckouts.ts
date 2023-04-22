@@ -1,9 +1,9 @@
 import CheckoutService from "@/service/checkout.service";
 import { ActionResult } from "@/types/actions";
-import { CheckoutResponse } from "@/types/checkout";
+import { CheckoutListResponse } from "@/types/checkout";
 import { useState, useEffect } from "react";
 export function useFetchCheckouts() {
-  const [checkouts, setCheckouts] = useState<CheckoutResponse[]>([]);
+  const [checkouts, setCheckouts] = useState<CheckoutListResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [actionResult, setActionResult] = useState<ActionResult | null>(null);
   useEffect(() => {

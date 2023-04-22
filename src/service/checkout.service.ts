@@ -1,13 +1,19 @@
-import { CheckoutRequest, CheckoutResponse } from "@/types/checkout";
+import {
+  CheckoutListResponse,
+  CheckoutRequest,
+  CheckoutResponse,
+} from "@/types/checkout";
 
 export default class CheckoutService {
-  public static async getCheckoutById(id: number): Promise<CheckoutResponse> {
+  public static async getCheckoutById(
+    id: string
+  ): Promise<CheckoutListResponse> {
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/checkouts/${id}`
       );
       if (!response.ok) throw new Error(await response.text());
-      const data = (await response.json()) as CheckoutResponse;
+      const data = (await response.json()) as CheckoutListResponse;
       return data;
     } catch (error) {
       throw new Error((error as Error).message);
@@ -42,16 +48,18 @@ export default class CheckoutService {
         `${process.env.REACT_APP_API_URL}/checkouts`
       );
       if (!response.ok) throw new Error(await response.text());
-      const data = (await response.json()) as CheckoutResponse[];
+      const data = (await response.json()) as CheckoutListResponse[];
       return data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
   }
 
-  public static async returnBook(checkoutId: string) {
+  public static async returnBook(
+    checkoutId: string
+  ): Promise<CheckoutListResponse> {
     try {
-      await fetch(
+      const response = await fetch(
         `${process.env.REACT_APP_API_URL}/checkouts/return/${checkoutId}`,
         {
           method: "PUT",
@@ -60,6 +68,9 @@ export default class CheckoutService {
           },
         }
       );
+      if (!response.ok) throw new Error(await response.text());
+      const data = (await response.json()) as CheckoutListResponse;
+      return data;
     } catch (error) {
       throw new Error((error as Error).message);
     }

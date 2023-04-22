@@ -28,8 +28,8 @@ export default function AppRoutes() {
           <Route path="/book/admin" element={<BookAdminPage />} />
           <Route path="/books/admin" element={<BookListAdminPage />} />
 
-          <Route path="/checkouts/:id" element={<CheckoutAdminPage />} />
-          <Route path="/checkouts" element={<CheckoutListAdminPage />} />
+          <Route path="/checkouts/admin/:id" element={<CheckoutAdminPage />} />
+          <Route path="/checkouts/admin" element={<CheckoutListAdminPage />} />
           <Route path="*" element={<h1>404 - Not Found!</h1>} />
         </Routes>
       </BrowserRouter>

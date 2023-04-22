@@ -69,7 +69,7 @@ export default class UserService {
   public static async findAll(): Promise<UserResponse[]> {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/users`);
-      if (!response.ok) throw new Error(response.statusText);
+      if (!response.ok) throw new Error(await response.text());
       const data = (await response.json()) as UserResponse[];
       return data;
     } catch (error) {

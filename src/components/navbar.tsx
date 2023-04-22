@@ -25,7 +25,7 @@ const pages: PageLink[] = [
   { name: "Home", path: "/" },
   { name: "Users", path: "/users" },
   { name: "Books", path: "/books/admin" },
-  { name: "Checkouts", path: "/checkouts" },
+  { name: "Checkouts", path: "/checkouts/admin" },
 ];
 
 const settings = ["Profile", "Logout"];
