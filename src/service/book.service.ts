@@ -32,6 +32,7 @@ export default class BookService {
         },
         body: JSON.stringify(book),
       });
+      if (!response.ok) throw new Error(await response.text());
       const data = (await response.json()) as BookResponse;
       return data;
     } catch (error) {
@@ -54,6 +55,7 @@ export default class BookService {
           body: JSON.stringify(book),
         }
       );
+      if (!response.ok) throw new Error(await response.text());
       const data = (await response.json()) as BookResponse;
       return data;
     } catch (error) {
