@@ -3,13 +3,11 @@ import { BookRequest, BookResponse } from "@/types/book";
 export default class BookService {
   public static async getBooks(): Promise<BookResponse[]> {
     try {
-      console.log("gettingAllBooksFront");
       const response = await fetch(`${process.env.REACT_APP_API_URL}/books`);
-      console.log("response: ", response);
+      if (!response.ok) throw new Error(await response.text());
       const data = (await response.json()) as BookResponse[];
       return data;
     } catch (error) {
-      console.log("error: ", error);
       throw new Error((error as Error).message);
     }
   }
@@ -19,6 +17,7 @@ export default class BookService {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/books/${id}`
       );
+      if (!response.ok) throw new Error(await response.text());
       const data = (await response.json()) as BookResponse;
       return data;
     } catch (error) {
@@ -71,6 +70,7 @@ export default class BookService {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/books/find?by=${by}value=${value}`
       );
+      if (!response.ok) throw new Error(await response.text());
       const data = (await response.json()) as BookResponse[];
       return data;
     } catch (error) {

@@ -24,9 +24,12 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { useFetchUsers } from "@/hooks/useFetchUsers";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 export default function UserListPage() {
-  const { users, loading } = useFetchUsers();
+  const { users, loading, actionResult, handleActionMessageClose } =
+    useFetchUsers();
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [searchUser, setSearchUser] = useState<string | null>(null);
 
@@ -154,6 +157,21 @@ export default function UserListPage() {
           </TableBody>
         </Table>
       </TableContainer>
+      {actionResult && (
+        <Snackbar
+          open={actionResult != null}
+          autoHideDuration={6000}
+          onClose={handleActionMessageClose}
+        >
+          <MuiAlert
+            onClose={handleActionMessageClose}
+            severity={actionResult?.messageType}
+            sx={{ width: "100%" }}
+          >
+            {actionResult?.message}
+          </MuiAlert>
+        </Snackbar>
+      )}
     </Container>
   );
 }

@@ -1,21 +1,25 @@
 import UserService from "@/service/user.service";
+import { ActionResult } from "@/types/actions";
 import { UserResponse } from "@/types/user";
 import { useState, useEffect } from "react";
 
 export function useFetchUsers() {
   const [users, setUsers] = useState<UserResponse[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [actionResult, setActionResult] = useState<ActionResult | null>(null);
 
   useEffect(() => {
     const getUsers = async () => {
       setLoading(true);
-      setError("");
+      setActionResult(null);
       try {
         const result = await UserService.findAll();
         setUsers(result);
       } catch (error) {
-        setError((error as Error).message);
+        setActionResult({
+          message: (error as Error).message,
+          messageType: "error",
+        });
       } finally {
         setLoading(false);
       }
@@ -23,5 +27,15 @@ export function useFetchUsers() {
     getUsers();
   }, []);
 
-  return { users, loading, error };
+  const handleActionMessageClose = (
+    _?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setActionResult(null);
+  };
+
+  return { users, loading, actionResult, handleActionMessageClose };
 }

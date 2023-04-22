@@ -68,13 +68,6 @@ export default function BookAdminPage() {
     }
   };
 
-  const handleSelectChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
-    const value = event.target.value;
-    setbook((prev) => ({ ...prev, role: value } as BookResponse));
-  };
-
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const name = e.target.name;

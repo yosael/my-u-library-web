@@ -6,6 +6,7 @@ export default class CheckoutService {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/checkouts/${id}`
       );
+      if (!response.ok) throw new Error(await response.text());
       const data = (await response.json()) as CheckoutResponse;
       return data;
     } catch (error) {
@@ -27,6 +28,7 @@ export default class CheckoutService {
           body: JSON.stringify(checkout),
         }
       );
+      if (!response.ok) throw new Error(await response.text());
       const data = (await response.json()) as CheckoutResponse;
       return data;
     } catch (error) {
@@ -39,6 +41,7 @@ export default class CheckoutService {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/checkouts`
       );
+      if (!response.ok) throw new Error(await response.text());
       const data = (await response.json()) as CheckoutResponse[];
       return data;
     } catch (error) {

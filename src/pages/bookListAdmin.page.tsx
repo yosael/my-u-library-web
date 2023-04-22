@@ -17,9 +17,12 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { useFetchBooks } from "@/hooks/useFetchBooks";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 export default function BookListAdminPage() {
-  const { books, loading } = useFetchBooks();
+  const { books, loading, actionResult, handleActionMessageClose } =
+    useFetchBooks();
   const [searchBook, setSearchBook] = useState<string | null>(null);
 
   const filteredBooks =
@@ -109,6 +112,21 @@ export default function BookListAdminPage() {
           </TableBody>
         </Table>
       </TableContainer>
+      {actionResult && (
+        <Snackbar
+          open={actionResult != null}
+          autoHideDuration={6000}
+          onClose={handleActionMessageClose}
+        >
+          <MuiAlert
+            onClose={handleActionMessageClose}
+            severity={actionResult?.messageType}
+            sx={{ width: "100%" }}
+          >
+            {actionResult?.message}
+          </MuiAlert>
+        </Snackbar>
+      )}
     </Container>
   );
 }

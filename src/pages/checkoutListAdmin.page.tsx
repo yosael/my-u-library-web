@@ -1,6 +1,4 @@
-import CheckoutService from "@/service/checkout.service";
-import { CheckoutResponse } from "@/types/checkout";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -19,9 +17,12 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { useFetchCheckouts } from "@/hooks/useFetchCheckouts";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 export default function CheckoutListAdminPage() {
-  const { checkouts, loading } = useFetchCheckouts();
+  const { checkouts, loading, actionResult, handleActionMessageClose } =
+    useFetchCheckouts();
 
   const [searchCheckout, setSearchCheckout] = useState<string | null>(null);
 
@@ -96,7 +97,7 @@ export default function CheckoutListAdminPage() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredCheckouts.map((row) => (
+            {filteredCheckouts?.map((row) => (
               <TableRow
                 key={row.userId}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -120,6 +121,21 @@ export default function CheckoutListAdminPage() {
           </TableBody>
         </Table>
       </TableContainer>
+      {actionResult && (
+        <Snackbar
+          open={actionResult != null}
+          autoHideDuration={6000}
+          onClose={handleActionMessageClose}
+        >
+          <MuiAlert
+            onClose={handleActionMessageClose}
+            severity={actionResult?.messageType}
+            sx={{ width: "100%" }}
+          >
+            {actionResult?.message}
+          </MuiAlert>
+        </Snackbar>
+      )}
     </Container>
   );
 }
