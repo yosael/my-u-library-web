@@ -1,6 +1,4 @@
-import BookService from "@/service/book.service";
-import { BookResponse } from "@/types/book";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -18,27 +16,11 @@ import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
+import { useFetchBooks } from "@/hooks/useFetchBooks";
 
 export default function BookListAdminPage() {
-  const [books, setBooks] = useState<BookResponse[]>([]);
-  const [loading, setLoading] = useState(false);
-
+  const { books, loading } = useFetchBooks();
   const [searchBook, setSearchBook] = useState<string | null>(null);
-
-  useEffect(() => {
-    const getBooks = async () => {
-      setLoading(true);
-      try {
-        const result = await BookService.getBooks();
-        setBooks(result);
-      } catch (error) {
-      } finally {
-        setLoading(false);
-      }
-    };
-    getBooks();
-    console.log("gettingBooks: ", books);
-  }, []);
 
   const filteredBooks =
     searchBook != null

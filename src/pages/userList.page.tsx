@@ -1,6 +1,4 @@
-import UserService from "@/service/user.service";
-import { UserResponse } from "@/types/user";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -25,26 +23,12 @@ import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
+import { useFetchUsers } from "@/hooks/useFetchUsers";
 
 export default function UserListPage() {
-  const [users, setUsers] = useState<UserResponse[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { users, loading } = useFetchUsers();
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [searchUser, setSearchUser] = useState<string | null>(null);
-
-  useEffect(() => {
-    const getUsers = async () => {
-      setLoading(true);
-      try {
-        const result = await UserService.findAll();
-        setUsers(result);
-      } catch (error) {
-      } finally {
-        setLoading(false);
-      }
-    };
-    getUsers();
-  }, []);
 
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedRole(event.target.value);

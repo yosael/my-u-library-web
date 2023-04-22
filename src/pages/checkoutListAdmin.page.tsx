@@ -18,27 +18,12 @@ import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
+import { useFetchCheckouts } from "@/hooks/useFetchCheckouts";
 
 export default function CheckoutListAdminPage() {
-  const [checkouts, setCheckouts] = useState<CheckoutResponse[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { checkouts, loading } = useFetchCheckouts();
 
   const [searchCheckout, setSearchCheckout] = useState<string | null>(null);
-
-  useEffect(() => {
-    const getCheckouts = async () => {
-      setLoading(true);
-      try {
-        const result = await CheckoutService.getCheckouts();
-        setCheckouts(result);
-      } catch (error) {
-      } finally {
-        setLoading(false);
-      }
-    };
-    getCheckouts();
-    console.log("gettingCheckouts: ", checkouts);
-  }, []);
 
   const filteredCheckouts =
     searchCheckout != null
