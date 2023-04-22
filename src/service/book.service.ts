@@ -11,7 +11,7 @@ export default class BookService {
     }
   }
 
-  public static async getBookById(id: number): Promise<BookResponse> {
+  public static async getBookById(id: string): Promise<BookResponse> {
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/books/${id}`

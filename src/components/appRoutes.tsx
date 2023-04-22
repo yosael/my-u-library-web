@@ -7,6 +7,8 @@ import UserPage from "@/pages/user.page";
 import UserListPage from "@/pages/userList.page";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./navbar";
+import BookAdminPage from "@/pages/bookAdmin.page";
+import BookListAdminPage from "@/pages/bookListAdmin.page";
 
 export default function AppRoutes() {
   return (
@@ -18,8 +20,14 @@ export default function AppRoutes() {
           <Route path="/user/:id" element={<UserPage />} />
           <Route path="/user" element={<UserPage />} />
           <Route path="/users" element={<UserListPage />} />
-          <Route path="/books/:id" element={<BookPage />} />
+          <Route path="/book/:id" element={<BookPage />} />
+          <Route path="/book" element={<BookPage />} />
           <Route path="/books" element={<BookListPage />} />
+
+          <Route path="/book/admin/:id" element={<BookAdminPage />} />
+          <Route path="/book/admin" element={<BookAdminPage />} />
+          <Route path="/books/admin" element={<BookListAdminPage />} />
+
           <Route path="/checkouts/:id" element={<CheckoutAdminPage />} />
           <Route path="/checkouts" element={<CheckoutListAdminPage />} />
           <Route path="*" element={<h1>404 - Not Found!</h1>} />
