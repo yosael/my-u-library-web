@@ -79,7 +79,7 @@ export default function UserListPage() {
           alignContent={"center"}
           justifyContent={"space-between"}
         >
-          <NavLink to={"/user"}>
+          <NavLink to={"/user"} style={{ textDecoration: "none" }}>
             <Button variant="contained" startIcon={<AddIcon />}>
               Add User
             </Button>

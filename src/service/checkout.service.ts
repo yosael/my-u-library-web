@@ -1,19 +1,21 @@
-import { Checkout } from "@/types/checkout";
+import { CheckoutRequest, CheckoutResponse } from "@/types/checkout";
 
 export default class CheckoutService {
-  public static async getCheckoutById(id: number): Promise<Checkout> {
+  public static async getCheckoutById(id: number): Promise<CheckoutResponse> {
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/checkouts/${id}`
       );
-      const data = (await response.json()) as Checkout;
+      const data = (await response.json()) as CheckoutResponse;
       return data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
   }
 
-  public static async createCheckout(checkout: Checkout): Promise<Checkout> {
+  public static async createCheckout(
+    checkout: CheckoutRequest
+  ): Promise<CheckoutResponse> {
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/checkouts`,
@@ -25,7 +27,19 @@ export default class CheckoutService {
           body: JSON.stringify(checkout),
         }
       );
-      const data = (await response.json()) as Checkout;
+      const data = (await response.json()) as CheckoutResponse;
+      return data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
+
+  public static async getCheckouts() {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/checkouts`
+      );
+      const data = (await response.json()) as CheckoutResponse[];
       return data;
     } catch (error) {
       throw new Error((error as Error).message);

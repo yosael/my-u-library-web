@@ -37,6 +37,7 @@ export default function BookListAdminPage() {
       }
     };
     getBooks();
+    console.log("gettingBooks: ", books);
   }, []);
 
   const filteredBooks =
@@ -64,7 +65,7 @@ export default function BookListAdminPage() {
           alignContent={"center"}
           justifyContent={"space-between"}
         >
-          <NavLink to={"/book/admin"}>
+          <NavLink to={"/book/admin"} style={{ textDecoration: "none" }}>
             <Button variant="contained" startIcon={<AddIcon />}>
               Add Book
             </Button>

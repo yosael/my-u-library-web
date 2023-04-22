@@ -3,10 +3,13 @@ import { BookRequest, BookResponse } from "@/types/book";
 export default class BookService {
   public static async getBooks(): Promise<BookResponse[]> {
     try {
+      console.log("gettingAllBooksFront");
       const response = await fetch(`${process.env.REACT_APP_API_URL}/books`);
+      console.log("response: ", response);
       const data = (await response.json()) as BookResponse[];
       return data;
     } catch (error) {
+      console.log("error: ", error);
       throw new Error((error as Error).message);
     }
   }
