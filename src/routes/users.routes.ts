@@ -126,7 +126,7 @@ export const studentRoutes: Route[] = [
     displayInMenu: true,
   },
   {
-    path: "/books/:id",
+    path: "/book/:id",
     Component: BookPage,
     name: "Book",
     displayInMenu: false,
