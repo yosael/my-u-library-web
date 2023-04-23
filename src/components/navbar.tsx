@@ -8,25 +8,12 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { NavLink } from "react-router-dom";
 import { styled } from "@mui/material";
-
-type PageLink = {
-  name: string;
-  path: string;
-};
-
-const pages: PageLink[] = [
-  { name: "Home", path: "/" },
-  { name: "Users", path: "/users" },
-  { name: "Books", path: "/books/admin" },
-  { name: "Checkouts", path: "/checkouts/admin" },
-];
+import { Route } from "@/routes/users.routes";
 
 const settings = ["Profile", "Logout"];
 
@@ -59,7 +46,11 @@ const StyledNavLinkMenu = styled(NavLink)({
   },
 });
 
-export default function Navbar() {
+type NavbarProps = {
+  routes: Route[];
+};
+
+export default function Navbar({ routes }: NavbarProps) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -133,13 +124,15 @@ export default function Navbar() {
                   display: { xs: "block", md: "none" },
                 }}
               >
-                {pages.map((page) => (
-                  <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                    <StyledNavLinkMenu to={page.path}>
-                      <Typography textAlign="center">{page.name}</Typography>
-                    </StyledNavLinkMenu>
-                  </MenuItem>
-                ))}
+                {routes
+                  .filter((route) => route.displayInMenu)
+                  .map(({ name, path }) => (
+                    <MenuItem key={name} onClick={handleCloseNavMenu}>
+                      <StyledNavLinkMenu to={path}>
+                        <Typography textAlign="center">{name}</Typography>
+                      </StyledNavLinkMenu>
+                    </MenuItem>
+                  ))}
               </Menu>
             </Box>
             <MenuBookIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -160,16 +153,17 @@ export default function Navbar() {
               My U Library
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-              {pages.map((page) => (
-                <StyledNavLink
-                  key={page.name}
-                  onClick={handleCloseNavMenu}
-                  //sx={{ my: 2, color: "white", display: "block" }}
-                  to={page.path}
-                >
-                  {page.name}
-                </StyledNavLink>
-              ))}
+              {routes
+                .filter((route) => route.displayInMenu)
+                .map(({ name, path }) => (
+                  <StyledNavLink
+                    key={`nav-item-${name}`}
+                    onClick={handleCloseNavMenu}
+                    to={path}
+                  >
+                    {name}
+                  </StyledNavLink>
+                ))}
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>

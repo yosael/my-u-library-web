@@ -1,13 +1,29 @@
 import { Container } from "@mui/material";
+import { Suspense } from "react";
 import "./App.css";
 import AppRoutes from "./components/appRoutes";
+import Loader from "./components/loader";
+import { UserContext } from "./context/userContext";
+import { User } from "./context/userContext";
+
+const user: User = {
+  id: "1",
+  name: "Edwin Librarian",
+  email: "",
+  role: "student",
+  isAuth: true,
+};
 
 function App() {
   return (
     <div className="App">
-      <Container>
-        <AppRoutes />
-      </Container>
+      <Suspense fallback={<Loader />}>
+        <Container>
+          <UserContext.Provider value={user}>
+            <AppRoutes />
+          </UserContext.Provider>
+        </Container>
+      </Suspense>
     </div>
   );
 }
