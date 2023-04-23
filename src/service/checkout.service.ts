@@ -55,6 +55,19 @@ export default class CheckoutService {
     }
   }
 
+  public static async getCheckoutsByUserId(userId: string) {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/checkouts/user/${userId}`
+      );
+      if (!response.ok) throw new Error(await response.text());
+      const data = (await response.json()) as CheckoutListResponse[];
+      return data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
+
   public static async returnBook(
     checkoutId: string
   ): Promise<CheckoutListResponse> {

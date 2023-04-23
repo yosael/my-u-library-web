@@ -14,10 +14,15 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import AddIcon from "@mui/icons-material/Add";
+import CheckoutService from "@/service/checkout.service";
+import { useContext } from "react";
+import { UserContext } from "@/context/userContext";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 export default function BookPage() {
   const [book, setbook] = useState<BookResponse | null>(null);
@@ -25,6 +30,8 @@ export default function BookPage() {
   const [loadingData, setLoadingData] = useState(false);
   const [actionResult, setActionResult] = useState<ActionResult | null>(null);
   const params = useParams();
+  const user = useContext(UserContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getBook = async (bookId: string) => {
@@ -48,7 +55,37 @@ export default function BookPage() {
   }, []);
 
   const handleRequestBook = async () => {
-    console.log("Request book");
+    try {
+      if (params.id && user?.id) {
+        setLoading(true);
+        const result = await CheckoutService.createCheckout({
+          book: params.id,
+          user: user.id,
+          checkoutDate: new Date(),
+          returnDate: null,
+          status: "requested",
+        });
+        navigate("/checkouts");
+      } else {
+        setActionResult({
+          message: "Please login to request a book",
+          messageType: "error",
+        });
+      }
+    } catch (error) {
+      setActionResult({
+        message: (error as Error).message,
+        messageType: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleClose = (_?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setActionResult(null);
   };
 
   const { title, author, genre, publishedYear, stock } = book || {};
@@ -92,8 +129,9 @@ export default function BookPage() {
               onClick={handleRequestBook}
               style={{ marginLeft: 5 }}
               startIcon={<AddIcon />}
+              disabled={loading}
             >
-              Request Book
+              {loading ? "Requesting Book" : "Request Book"}
             </Button>
           ) : (
             <Typography variant="body1" color="error">
@@ -102,6 +140,21 @@ export default function BookPage() {
           )}
         </CardActions>
       </Card>
+      {actionResult && (
+        <Snackbar
+          open={actionResult != null}
+          autoHideDuration={6000}
+          onClose={handleClose}
+        >
+          <MuiAlert
+            onClose={handleClose}
+            severity={actionResult?.messageType}
+            sx={{ width: "100%" }}
+          >
+            {actionResult?.message}
+          </MuiAlert>
+        </Snackbar>
+      )}
     </Container>
   );
 }

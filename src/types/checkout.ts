@@ -1,6 +1,6 @@
 export type CheckoutRequest = {
-  userId: string;
-  bookId: string;
+  user: string;
+  book: string;
   checkoutDate: Date;
   returnDate: Date | null;
   status: string;
