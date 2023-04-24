@@ -1,6 +1,4 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import { useContext, useEffect } from "react";
-import { UserContext } from "@/context/userContext";
 import LoginPage from "@/pages/login.page";
 import { librarianRoutes, studentRoutes } from "@/routes/users.routes";
 import ProtectedRoute from "./protectedRoute";

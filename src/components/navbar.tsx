@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -14,9 +14,8 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { NavLink } from "react-router-dom";
 import { styled } from "@mui/material";
 import { Route } from "@/routes/users.routes";
-import { UserContext } from "@/context/userContext";
-import { useAppDispatch } from "@/hooks/storeHooks";
 import { logoutStore } from "@/store/userSlice";
+import { useAppDispatch } from "@/hooks/storeHooks";
 
 const settings = ["Logout"];
 

@@ -90,7 +90,7 @@ export default function CheckoutAdminPage() {
       <Box
         component="form"
         sx={{
-          "& .MuiTextField-root": { m: 1, width: "35ch" },
+          "& .MuiTextField-root": { m: 1, width: "31ch" },
           maxWidth: 600,
           width: "100%",
           margin: "0 auto",
