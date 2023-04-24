@@ -11,7 +11,7 @@ export default defineConfig({
   },
   define: {
     "process.env": {
-      REACT_APP_API_URL: "http://localhost:3333/api",
+      REACT_APP_API_URL: "https://my-u-library-backend-yosa.herokuapp.com/api",
     },
   },
 });
