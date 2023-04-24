@@ -20,6 +20,7 @@ export default function UserPage() {
   const [loadingData, setLoadingData] = useState(false);
   const [actionResult, setActionResult] = useState<ActionResult | null>(null);
   const params = useParams();
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     const getUser = async (userId: string) => {
@@ -51,7 +52,10 @@ export default function UserPage() {
       if (params.id) {
         await UserService.updateUser(params.id, user);
       } else {
-        await UserService.createUser(user);
+        if (password.length < 6)
+          throw new Error("Password must be at least 6 characters");
+
+        await UserService.createUser({ ...user, password });
       }
       setActionResult({
         message: "User succesfully saved",
@@ -129,8 +133,21 @@ export default function UserPage() {
             label={"Email"}
             onChange={onInputChange}
             name="email"
+            type="email"
             required
           />
+          {params.id ? null : (
+            <TextField
+              value={password || ""}
+              label={"Password"}
+              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              type="password"
+              required
+            />
+          )}
+        </div>
+        <div>
           <TextField
             id="select-role"
             value={user?.role || ""}

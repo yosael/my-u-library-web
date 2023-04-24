@@ -1,5 +1,5 @@
-import { Routes, Route, BrowserRouter, useLocation } from "react-router-dom";
-import { useContext } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { useContext, useEffect } from "react";
 import { UserContext } from "@/context/userContext";
 import LoginPage from "@/pages/login.page";
 import { librarianRoutes, studentRoutes } from "@/routes/users.routes";
@@ -10,6 +10,10 @@ export default function AppRoutes() {
   const { user } = useContext(UserContext);
   const routes = user?.role === "librarian" ? librarianRoutes : studentRoutes;
   const location = useLocation();
+  console.log("The user is logged in?", user);
+  useEffect(() => {
+    console.log("User changed", user);
+  }, [user]);
 
   return (
     <>

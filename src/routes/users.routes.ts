@@ -116,7 +116,14 @@ export const librarianRoutes: Route[] = [
     isProtected: true,
   },
   {
-    path: "/users/:id",
+    path: "/user/:id",
+    Component: UserPage,
+    name: "User",
+    displayInMenu: false,
+    isProtected: true,
+  },
+  {
+    path: "/user",
     Component: UserPage,
     name: "User",
     displayInMenu: false,

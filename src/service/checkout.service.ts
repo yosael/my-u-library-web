@@ -10,7 +10,14 @@ export default class CheckoutService {
   ): Promise<CheckoutListResponse> {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/checkouts/${id}`
+        `${process.env.REACT_APP_API_URL}/checkouts/${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
       );
       if (!response.ok) throw new Error(await response.text());
       const data = (await response.json()) as CheckoutListResponse;
@@ -30,6 +37,7 @@ export default class CheckoutService {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify(checkout),
         }
@@ -45,7 +53,14 @@ export default class CheckoutService {
   public static async getCheckouts() {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/checkouts`
+        `${process.env.REACT_APP_API_URL}/checkouts`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
       );
       if (!response.ok) throw new Error(await response.text());
       const data = (await response.json()) as CheckoutListResponse[];
@@ -58,7 +73,14 @@ export default class CheckoutService {
   public static async getCheckoutsByUserId(userId: string) {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/checkouts/user/${userId}`
+        `${process.env.REACT_APP_API_URL}/checkouts/user/${userId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
       );
       if (!response.ok) throw new Error(await response.text());
       const data = (await response.json()) as CheckoutListResponse[];
@@ -78,6 +100,7 @@ export default class CheckoutService {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         }
       );

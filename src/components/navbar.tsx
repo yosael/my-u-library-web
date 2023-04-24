@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useContext, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -14,8 +14,9 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { NavLink } from "react-router-dom";
 import { styled } from "@mui/material";
 import { Route } from "@/routes/users.routes";
+import { UserContext } from "@/context/userContext";
 
-const settings = ["Profile", "Logout"];
+const settings = ["Logout"];
 
 const StyledNavLink = styled(NavLink)({
   display: "block",
@@ -51,12 +52,8 @@ type NavbarProps = {
 };
 
 export default function Navbar({ routes }: NavbarProps) {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -71,6 +68,13 @@ export default function Navbar({ routes }: NavbarProps) {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const { logout } = useContext(UserContext);
+
+  const logoutAndCloseMenu = () => {
+    logout();
+    handleCloseUserMenu();
   };
 
   return (
@@ -189,7 +193,7 @@ export default function Navbar({ routes }: NavbarProps) {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <MenuItem key={setting} onClick={logoutAndCloseMenu}>
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}

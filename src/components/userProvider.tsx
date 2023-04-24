@@ -1,18 +1,22 @@
 import { User, UserContext } from "@/context/userContext";
-import React, { useState } from "react";
+import { UserLogged } from "@/types/user";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type UserProviderProps = {
   children: React.ReactNode;
 };
 
+const emptyUser: User = {
+  id: "",
+  name: "",
+  email: "",
+  role: "",
+  isAuth: false,
+};
+
 export default function UserProvider({ children }: UserProviderProps) {
-  const [user, setUser] = useState<User | null>({
-    id: "",
-    name: "",
-    email: "",
-    role: "",
-    isAuth: false,
-  });
+  const [user, setUser] = useState<User | null>(emptyUser);
 
   const login = async (email: string, password: string) => {
     try {
@@ -26,19 +30,31 @@ export default function UserProvider({ children }: UserProviderProps) {
           },
         }
       );
-      const data = await result.json();
-      if (data?.user) {
-        setUser(data.user);
+      if (result.status !== 200) throw new Error("Invalid credentials");
+
+      if (!result.ok) throw new Error("Invalid credentials");
+
+      const data = (await result.json()) as UserLogged;
+      console.log("login", data);
+      if (data?.id) {
+        setUser({
+          id: data.id,
+          name: data.firstName + " " + data.lastName,
+          email: data.email,
+          role: data.role,
+          isAuth: true,
+        });
+        localStorage.setItem("token", data.token);
       }
     } catch (error) {
-      console.log(error);
+      console.log("error", error);
+      throw error;
     }
   };
 
   const logout = async () => {
-    console.log("logoutMethod: ");
     try {
-      const result = await fetch(
+      /*const result = await fetch(
         `${process.env.REACT_APP_API_URL}/auth/logout`,
         {
           method: "POST",
@@ -50,9 +66,12 @@ export default function UserProvider({ children }: UserProviderProps) {
       const data = await result.json();
       if (data?.user) {
         setUser(data.user);
-      }
+      }*/
+      setUser(emptyUser);
+      localStorage.removeItem("token");
+      window.location.href = "/login";
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   };
 

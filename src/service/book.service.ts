@@ -3,7 +3,13 @@ import { BookRequest, BookResponse } from "@/types/book";
 export default class BookService {
   public static async getBooks(): Promise<BookResponse[]> {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/books`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/books`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
       if (!response.ok) throw new Error(await response.text());
       const data = (await response.json()) as BookResponse[];
       return data;
@@ -15,7 +21,14 @@ export default class BookService {
   public static async getBookById(id: string): Promise<BookResponse> {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/books/${id}`
+        `${process.env.REACT_APP_API_URL}/books/${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
       );
       if (!response.ok) throw new Error(await response.text());
       const data = (await response.json()) as BookResponse;
@@ -31,6 +44,7 @@ export default class BookService {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
         },
         body: JSON.stringify(book),
       });
@@ -53,6 +67,7 @@ export default class BookService {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
           body: JSON.stringify(book),
         }
@@ -68,7 +83,14 @@ export default class BookService {
   public static async findBookBy(by: string, value: string) {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/books/find?by=${by}value=${value}`
+        `${process.env.REACT_APP_API_URL}/books/find?by=${by}value=${value}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
       );
       if (!response.ok) throw new Error(await response.text());
       const data = (await response.json()) as BookResponse[];
