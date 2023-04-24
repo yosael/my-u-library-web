@@ -8,6 +8,7 @@ export type Route = {
   name: string;
   displayInMenu: boolean;
   children?: Route[];
+  isProtected: boolean;
 };
 
 const HomePage = lazy(
@@ -67,48 +68,66 @@ const CheckoutListPage = lazy(
     )
 );
 
+const LoginPage = lazy(
+  () => import(/* webpackChunkName: "LoginPage" */ "@/pages/login.page")
+);
+
 export const librarianRoutes: Route[] = [
   {
     path: "/",
     Component: HomePage,
     name: "Home",
     displayInMenu: true,
+    isProtected: true,
   },
   {
     path: "/books/admin",
     Component: BookListAdminPage,
     name: "Books",
     displayInMenu: true,
+    isProtected: true,
   },
   {
     path: "/books/admin/:id",
     Component: BookAdminPage,
     name: "Book",
     displayInMenu: false,
+    isProtected: true,
   },
   {
     path: "/checkouts/admin",
     Component: CheckoutListAdminPage,
     name: "Checkouts",
     displayInMenu: true,
+    isProtected: true,
   },
   {
     path: "/checkouts/admin/:id",
     Component: CheckoutAdminPage,
     name: "Checkout",
     displayInMenu: false,
+    isProtected: true,
   },
   {
     path: "/users",
     Component: UserListPage,
     name: "Users",
     displayInMenu: true,
+    isProtected: true,
   },
   {
     path: "/users/:id",
     Component: UserPage,
     name: "User",
     displayInMenu: false,
+    isProtected: true,
+  },
+  {
+    path: "/login",
+    Component: LoginPage,
+    name: "Login",
+    displayInMenu: false,
+    isProtected: false,
   },
 ];
 
@@ -118,29 +137,41 @@ export const studentRoutes: Route[] = [
     Component: HomePage,
     name: "Home",
     displayInMenu: true,
+    isProtected: true,
   },
   {
     path: "/books",
     Component: BookListPage,
     name: "Books",
     displayInMenu: true,
+    isProtected: true,
   },
   {
     path: "/book/:id",
     Component: BookPage,
     name: "Book",
     displayInMenu: false,
+    isProtected: true,
   },
   {
     path: "/checkouts",
     Component: CheckoutListPage,
     name: "Checkouts",
     displayInMenu: true,
+    isProtected: true,
   },
   {
     path: "/checkouts/:id",
     Component: CheckoutPage,
     name: "Checkout",
     displayInMenu: false,
+    isProtected: true,
+  },
+  {
+    path: "/login",
+    Component: LoginPage,
+    name: "Login",
+    displayInMenu: false,
+    isProtected: false,
   },
 ];

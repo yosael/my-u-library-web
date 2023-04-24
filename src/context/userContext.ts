@@ -1,11 +1,27 @@
 import { createContext } from "react";
 
-export interface User {
+export type User = {
   id: string;
   name: string;
   email: string;
   role: string;
   isAuth: boolean;
-}
+};
 
-export const UserContext = createContext<User | null>(null);
+export type UserContextType = {
+  user: User | null;
+  login: (username: string, password: string) => Promise<void>;
+  logout: () => void;
+};
+
+export const UserContext = createContext<UserContextType>({
+  user: {
+    id: "",
+    name: "",
+    email: "",
+    role: "",
+    isAuth: true,
+  },
+  login: async (username: string, password: string) => {},
+  logout: () => {},
+});
