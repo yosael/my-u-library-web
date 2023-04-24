@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
-import { useState, useContext } from "react";
-import { UserContext } from "@/context/userContext";
+import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,25 +9,56 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { useNavigate } from "react-router-dom";
+import UserService from "@/service/user.service";
+import { useAppDispatch } from "@/hooks/storeHooks";
+import { loginStore } from "@/store/userSlice";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import { ActionResult } from "@/types/actions";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useContext(UserContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const [actionResult, setActionResult] = useState<ActionResult | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       setLoading(true);
-      await login(email, password);
+      const data = await UserService.login(email, password);
+      console.log(data);
+      if (data?.token) {
+        dispatch(
+          loginStore({
+            id: data.id,
+            name: data.firstName + " " + data.lastName,
+            email: data.email,
+            role: data.role,
+            isAuth: true,
+          })
+        );
+        localStorage.setItem("token", data.token);
+      }
       navigate("/");
     } catch (error) {
       console.log(error);
+      setActionResult({
+        message: (error as Error).message,
+        messageType: "error",
+      });
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleClose = (_?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setActionResult(null);
   };
 
   return (
@@ -92,6 +122,21 @@ export default function LoginPage() {
           </Button>
         </Box>
       </Box>
+      {actionResult && (
+        <Snackbar
+          open={actionResult != null}
+          autoHideDuration={6000}
+          onClose={handleClose}
+        >
+          <MuiAlert
+            onClose={handleClose}
+            severity={actionResult?.messageType}
+            sx={{ width: "100%" }}
+          >
+            {actionResult?.message}
+          </MuiAlert>
+        </Snackbar>
+      )}
     </Container>
   );
 }

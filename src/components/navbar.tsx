@@ -15,6 +15,8 @@ import { NavLink } from "react-router-dom";
 import { styled } from "@mui/material";
 import { Route } from "@/routes/users.routes";
 import { UserContext } from "@/context/userContext";
+import { useAppDispatch } from "@/hooks/storeHooks";
+import { logoutStore } from "@/store/userSlice";
 
 const settings = ["Logout"];
 
@@ -54,6 +56,7 @@ type NavbarProps = {
 export default function Navbar({ routes }: NavbarProps) {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const dispatch = useAppDispatch();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -70,7 +73,15 @@ export default function Navbar({ routes }: NavbarProps) {
     setAnchorElUser(null);
   };
 
-  const { logout } = useContext(UserContext);
+  const logout = async () => {
+    try {
+      dispatch(logoutStore());
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    } catch (error) {
+      throw error;
+    }
+  };
 
   const logoutAndCloseMenu = () => {
     logout();

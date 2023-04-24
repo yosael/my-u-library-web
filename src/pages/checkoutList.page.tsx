@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,8 +6,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
-import EditIcon from "@mui/icons-material/Edit";
-import { Link, NavLink } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Loader from "@/components/loader";
 import Paper from "@mui/material/Paper";
@@ -17,10 +15,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useFetchCheckouts } from "@/hooks/useFetchCheckouts";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import { UserContext } from "@/context/userContext";
+import { useAppSelector } from "@/hooks/storeHooks";
+import { selectUser } from "@/store/userSlice";
 
 export default function CheckoutListPage() {
-  const user = useContext(UserContext);
+  const user = useAppSelector(selectUser);
   const { checkouts, loading, actionResult, handleActionMessageClose } =
     useFetchCheckouts(user?.id);
 

@@ -88,7 +88,14 @@ export const librarianRoutes: Route[] = [
     isProtected: true,
   },
   {
-    path: "/books/admin/:id",
+    path: "/book/admin/:id",
+    Component: BookAdminPage,
+    name: "Book",
+    displayInMenu: false,
+    isProtected: true,
+  },
+  {
+    path: "/book/admin",
     Component: BookAdminPage,
     name: "Book",
     displayInMenu: false,

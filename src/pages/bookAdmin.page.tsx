@@ -26,7 +26,6 @@ export default function BookAdminPage() {
       try {
         setLoadingData(true);
         const result = await BookService.getBookById(bookId);
-        console.log("book Result: ", result);
         setbook(result);
       } catch (error) {
         setActionResult({

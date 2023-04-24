@@ -5,15 +5,13 @@ import LoginPage from "@/pages/login.page";
 import { librarianRoutes, studentRoutes } from "@/routes/users.routes";
 import ProtectedRoute from "./protectedRoute";
 import Navbar from "./navbar";
+import { useAppSelector } from "@/hooks/storeHooks";
+import { selectUser } from "@/store/userSlice";
 
 export default function AppRoutes() {
-  const { user } = useContext(UserContext);
+  const user = useAppSelector(selectUser);
   const routes = user?.role === "librarian" ? librarianRoutes : studentRoutes;
   const location = useLocation();
-  console.log("The user is logged in?", user);
-  useEffect(() => {
-    console.log("User changed", user);
-  }, [user]);
 
   return (
     <>

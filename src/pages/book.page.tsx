@@ -3,14 +3,12 @@ import BookService from "@/service/book.service";
 import { ActionResult } from "@/types/actions";
 import { BookResponse } from "@/types/book";
 import {
-  Box,
   Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
   Container,
-  Paper,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -19,10 +17,10 @@ import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import AddIcon from "@mui/icons-material/Add";
 import CheckoutService from "@/service/checkout.service";
-import { useContext } from "react";
-import { UserContext } from "@/context/userContext";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import { useAppSelector } from "@/hooks/storeHooks";
+import { selectUser } from "@/store/userSlice";
 
 export default function BookPage() {
   const [book, setbook] = useState<BookResponse | null>(null);
@@ -30,7 +28,7 @@ export default function BookPage() {
   const [loadingData, setLoadingData] = useState(false);
   const [actionResult, setActionResult] = useState<ActionResult | null>(null);
   const params = useParams();
-  const user = useContext(UserContext);
+  const user = useAppSelector(selectUser);
   const navigate = useNavigate();
 
   useEffect(() => {
