@@ -11,7 +11,7 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material";
 import { Route } from "@/routes/users.routes";
 import { logoutStore } from "@/store/userSlice";
@@ -56,6 +56,7 @@ export default function Navbar({ routes }: NavbarProps) {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -76,7 +77,7 @@ export default function Navbar({ routes }: NavbarProps) {
     try {
       dispatch(logoutStore());
       localStorage.removeItem("token");
-      window.location.href = "/login";
+      navigate("/login");
     } catch (error) {
       throw error;
     }
